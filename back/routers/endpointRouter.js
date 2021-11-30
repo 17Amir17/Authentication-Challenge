@@ -51,11 +51,11 @@ const options = [
 ];
 
 const userTypes = {
-  anon: 2,
+  anon: 3,
   reg: 6,
   admin: 7,
 };
-router.get('', (req, res) => {
+router.options('', (req, res) => {
   let userType = userTypes.anon;
   const token =
     req.headers.authorization && req.headers.authorization.split(' ')[1];
@@ -65,7 +65,7 @@ router.get('', (req, res) => {
       userType = user.isAdmin ? userTypes.admin : userTypes.reg;
     }
   }
-  res.json(options.slice(0, userType));
+  res.set({ Allow: 'OPTIONS, GET, POST' }).json(options.slice(0, userType));
 });
 
 module.exports = router;

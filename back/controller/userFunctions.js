@@ -32,7 +32,6 @@ function token(req, res) {
   const { token } = req.body;
   if (!token) throw errorCodes.noRefreshToken;
   const user = validateToken(token);
-  console.log(user);
   if (!REFRESHTOKENS.find((t) => t === token) || !user)
     throw errorCodes.invalidRefreshToken;
   res.status(200).json({
