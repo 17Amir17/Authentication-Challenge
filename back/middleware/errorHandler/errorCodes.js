@@ -8,6 +8,8 @@ const errorCodes = {
     message: 'Username or password is incorrect',
     code: 403,
   },
+  noAccessToken: { message: 'Access Token Required', code: 401 },
+  invalidAccessToken: { message: 'Invalid Access Token', code: 403 },
 };
 
 module.exports = errorCodes;

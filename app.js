@@ -4,11 +4,11 @@ const morgan = require('morgan');
 const errorCodes = require('./back/middleware/errorHandler/errorCodes');
 const errorHandler = require('./back/middleware/errorHandler/errorHandler');
 const userRouter = require('./back/routers/userRouter');
+const { authenticate } = require('./back/middleware/authHandler');
 const server = express();
 // Middleware
 server.use(express.json());
 //Morgan
-//Morgan config
 //Log with tiny config every request other than POST
 server.use(
   morgan('tiny', {
@@ -29,6 +29,8 @@ server.use(
     }
   )
 );
+//Auth Middleware
+server.use(authenticate);
 //Routers
 server.use('/users', userRouter);
 server.get('*', (req, res) => {

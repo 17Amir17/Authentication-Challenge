@@ -26,9 +26,18 @@ function generateToken(data, exp) {
   });
 }
 
+function validateToken(accessKey) {
+  try {
+    return jwt.verify(accessKey, SECRET);
+  } catch (error) {
+    return false;
+  }
+}
+
 module.exports = {
   encrypt,
   generateAccessToken,
   generateRefreshToken,
   compare,
+  validateToken,
 };
