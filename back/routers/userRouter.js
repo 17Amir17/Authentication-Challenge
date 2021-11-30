@@ -13,4 +13,5 @@ router.post('/login', login);
 router.post('/tokenValidate', tokenValidate);
 router.post('/token', token);
 router.post('/logout', logout);
-router.module.exports = router;
+
+module.exports = router;
