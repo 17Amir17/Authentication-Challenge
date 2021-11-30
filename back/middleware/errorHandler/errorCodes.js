@@ -12,8 +12,8 @@ const errorCodes = {
   invalidAccessToken: { message: 'Invalid Access Token', code: 403 },
   noRefreshToken: { message: 'Refresh token required', code: 401 },
   invalidRefreshToken: { message: 'Invalid Refresh Token', code: 403 },
-  emptyNo: { message: '', code: 401 },
-  emptyInvalid: { message: '', code: 403 },
+  emptyNo: { message: '', code: 403 },
+  emptyInvalid: { message: '', code: 401 },
 };
 
 module.exports = errorCodes;
