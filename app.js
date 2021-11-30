@@ -35,7 +35,7 @@ server.use(
 server.use('/users', userRouter);
 server.use('/api', apiRouter);
 server.use('/', endPointRouter);
-server.get('*', (req, res) => {
+server.use('*', (req, res) => {
   throw errorCodes.notFound;
 });
 server.use(errorHandler);
