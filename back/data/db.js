@@ -26,13 +26,14 @@ function userExists(email) {
 
 function registerToDB(email, user, password) {
   if (userExists(email)) throw errorCodes.userExists;
+  password = encrypt(password);
   USERS.push({
     email,
     name: user,
-    password: encrypt(password),
+    password: password,
     isAdmin: false,
   });
-  INFORMATION.push({ email, info: { name: user } });
+  INFORMATION.push({ email, info: { name: user, password, isAdmin: false } });
   return true;
 }
 
@@ -42,9 +43,11 @@ function loginCheck(email, password) {
   });
   if (!user) throw errorCodes.userDoesNotExist;
   if (!compare(user.password, password)) throw errorCodes.userOrPasswordWrong;
+  const refreshToken = generateRefreshToken(user);
+  REFRESHTOKENS.push(refreshToken);
   return {
     accessToken: generateAccessToken(user),
-    refreshToken: generateRefreshToken(user),
+    refreshToken: refreshToken,
     email: user.email,
     name: user.name,
     isAdmin: user.isAdmin,

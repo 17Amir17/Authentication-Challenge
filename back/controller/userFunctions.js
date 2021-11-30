@@ -1,5 +1,5 @@
 const { validateToken, generateAccessToken } = require('../auth/auth');
-const { registerToDB, loginCheck } = require('../data/db');
+const { registerToDB, loginCheck, REFRESHTOKENS } = require('../data/db');
 const errorCodes = require('../middleware/errorHandler/errorCodes');
 
 function register(req, res) {
@@ -32,10 +32,28 @@ function token(req, res) {
   const { token } = req.body;
   if (!token) throw errorCodes.noRefreshToken;
   const user = validateToken(token);
-  if (!user) throw errorCodes.invalidRefreshToken;
-  res.status(200).json({ accessToken: generateAccessToken(user) });
+  console.log(user);
+  if (!REFRESHTOKENS.find((t) => t === token) || !user)
+    throw errorCodes.invalidRefreshToken;
+  res.status(200).json({
+    accessToken: generateAccessToken({
+      email: user.email,
+      name: user.name,
+      password: user.password,
+      isAdmin: user.isAdmin,
+    }),
+  });
 }
 
-function logout(req, res) {}
+function logout(req, res) {
+  const { token } = req.body;
+  if (!token) throw errorCodes.noRefreshToken;
+  const user = validateToken(token);
+  if (!REFRESHTOKENS.find((t) => t === token) || !user)
+    throw errorCodes.invalidRefreshToken;
+  REFRESHTOKENS.splice(REFRESHTOKENS.indexOf(token), 1);
+  res.status(200).send('User Logged Out Successfully');
+  console.log(REFRESHTOKENS);
+}
 
 module.exports = { register, login, tokenValidate, token, logout };
