@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const errorCodes = require('./back/middleware/errorHandler/errorCodes');
 const errorHandler = require('./back/middleware/errorHandler/errorHandler');
 const userRouter = require('./back/routers/userRouter');
-const { authenticate } = require('./back/middleware/authHandler');
+const apiRouter = require('./back/routers/apiRouter');
 const server = express();
 // Middleware
 server.use(express.json());
@@ -29,10 +29,10 @@ server.use(
     }
   )
 );
-//Auth Middleware
-server.use(authenticate);
+
 //Routers
 server.use('/users', userRouter);
+server.use('/api', apiRouter);
 server.get('*', (req, res) => {
   throw errorCodes.notFound;
 });

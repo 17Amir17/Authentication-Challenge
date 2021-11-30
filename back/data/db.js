@@ -14,7 +14,7 @@ const USERS = [
     isAdmin: true,
   },
 ];
-const INFORMATION = [];
+const INFORMATION = [{ email: 'admin@email.com', info: { name: 'admin' } }];
 const REFRESHTOKENS = [];
 
 function userExists(email) {
@@ -32,6 +32,7 @@ function registerToDB(email, user, password) {
     password: encrypt(password),
     isAdmin: false,
   });
+  INFORMATION.push({ email, info: { name: user } });
   return true;
 }
 
@@ -50,9 +51,18 @@ function loginCheck(email, password) {
   };
 }
 
+function getInfo(email) {
+  const user = INFORMATION.find((user) => {
+    return user.email === email;
+  });
+  if (!user) throw errorCodes.userDoesNotExist;
+  return { email: user.email, info: user.info };
+}
+
 module.exports = {
   registerToDB,
   loginCheck,
+  getInfo,
   USERS,
   INFORMATION,
   REFRESHTOKENS,
