@@ -2,6 +2,7 @@ const {
   encrypt,
   generateAccessToken,
   generateRefreshToken,
+  compare,
 } = require('../auth/auth');
 const errorCodes = require('../middleware/errorHandler/errorCodes');
 
@@ -25,7 +26,12 @@ function userExists(email) {
 
 function registerToDB(email, user, password) {
   if (userExists(email)) throw errorCodes.userExists;
-  USERS.push({ email, name, password: encrypt(password), isAdmin: false });
+  USERS.push({
+    email,
+    name: user,
+    password: encrypt(password),
+    isAdmin: false,
+  });
   return true;
 }
 
@@ -34,7 +40,7 @@ function loginCheck(email, password) {
     return user.email === email;
   });
   if (!user) throw errorCodes.userDoesNotExist;
-  if (user.password !== encrypt(password)) throw errorCodes.userOrPasswordWrong;
+  if (!compare(user.password, password)) throw errorCodes.userOrPasswordWrong;
   return {
     accessToken: generateAccessToken(user),
     refreshToken: generateRefreshToken(user),

@@ -6,12 +6,14 @@ function register(req, res) {
   res.status(201).send('Register Success');
 }
 function login(req, res) {
-  const { mail, password } = req.body;
-  const { accessToken, refreshToken, email, name, isAdmin } = loginCheck(
-    mail,
+  const { email, password } = req.body;
+  const { accessToken, refreshToken, userMail, name, isAdmin } = loginCheck(
+    email,
     password
   );
-  res.status(200).json({ accessToken, refreshToken, email, name, isAdmin });
+  res
+    .status(200)
+    .json({ accessToken, refreshToken, email: userMail, name, isAdmin });
 }
 function tokenValidate(req, res) {}
 function token(req, res) {}
