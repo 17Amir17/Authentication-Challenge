@@ -14,10 +14,10 @@ function authenticate(req, res, next) {
 function adminAuth(req, res, next) {
   const token =
     req.headers.authorization && req.headers.authorization.split(' ')[1];
-  if (!token) throw errorCodes.noAccessToken;
+  if (!token) throw errorCodes.emptyNo;
   const user = validateToken(token);
-  if (!user) throw errorCodes.invalidAccessToken;
-  if (!user.isAdmin) throw errorCodes.invalidAccessToken;
+  if (!user) throw errorCodes.emptyInvalid;
+  if (!user.isAdmin) throw errorCodes.emptyInvalid;
   req.auth = validateToken(token);
   next();
 }

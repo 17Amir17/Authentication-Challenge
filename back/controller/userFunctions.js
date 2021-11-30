@@ -3,20 +3,20 @@ const { registerToDB, loginCheck, REFRESHTOKENS } = require('../data/db');
 const errorCodes = require('../middleware/errorHandler/errorCodes');
 
 function register(req, res) {
-  const { email, user, password } = req.body;
-  registerToDB(email, user, password);
+  const { email, name, password } = req.body;
+  registerToDB(email, name, password);
   res.status(201).send('Register Success');
 }
 
 function login(req, res) {
   const { email, password } = req.body;
-  const { accessToken, refreshToken, userMail, name, isAdmin } = loginCheck(
+  const { accessToken, refreshToken, userEmail, name, isAdmin } = loginCheck(
     email,
     password
   );
   res
     .status(200)
-    .json({ accessToken, refreshToken, email: userMail, name, isAdmin });
+    .json({ accessToken, refreshToken, email: userEmail, name, isAdmin });
 }
 
 function tokenValidate(req, res) {

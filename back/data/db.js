@@ -33,7 +33,7 @@ function registerToDB(email, user, password) {
     password: password,
     isAdmin: false,
   });
-  INFORMATION.push({ email, info: { name: user, password, isAdmin: false } });
+  INFORMATION.push({ email, info: `${user} info` });
   return true;
 }
 
@@ -48,7 +48,7 @@ function loginCheck(email, password) {
   return {
     accessToken: generateAccessToken(user),
     refreshToken: refreshToken,
-    email: user.email,
+    userEmail: user.email,
     name: user.name,
     isAdmin: user.isAdmin,
   };
