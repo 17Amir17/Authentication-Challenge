@@ -3,6 +3,11 @@ const errorCodes = {
   notFound: { message: '404 not found', code: 404 },
   invalidInput: { message: 'Invalid input', code: 400 },
   userExists: { message: 'User Already Exists', code: 409 },
+  userDoesNotExist: { message: 'User does not exists', code: 404 },
+  userOrPasswordWrong: {
+    message: 'Username or password is incorrect',
+    code: 403,
+  },
 };
 
 module.exports = errorCodes;
