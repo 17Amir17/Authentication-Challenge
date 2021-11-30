@@ -11,4 +11,15 @@ function authenticate(req, res, next) {
   next();
 }
 
-module.exports = { authenticate };
+function adminAuth(req, res, next) {
+  const token =
+    req.headers.authorization && req.headers.authorization.split(' ')[1];
+  if (!token) throw errorCodes.noAccessToken;
+  const user = validateToken(token);
+  if (!user) throw errorCodes.invalidAccessToken;
+  if (!user.isAdmin) throw errorCodes.invalidAccessToken;
+  req.auth = validateToken(token);
+  next();
+}
+
+module.exports = { authenticate, adminAuth };

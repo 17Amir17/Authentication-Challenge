@@ -53,7 +53,6 @@ function logout(req, res) {
     throw errorCodes.invalidRefreshToken;
   REFRESHTOKENS.splice(REFRESHTOKENS.indexOf(token), 1);
   res.status(200).send('User Logged Out Successfully');
-  console.log(REFRESHTOKENS);
 }
 
 module.exports = { register, login, tokenValidate, token, logout };
