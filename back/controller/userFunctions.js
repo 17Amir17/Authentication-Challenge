@@ -1,4 +1,4 @@
-const { validateToken } = require('../auth/auth');
+const { validateToken, generateAccessToken } = require('../auth/auth');
 const { registerToDB, loginCheck } = require('../data/db');
 const errorCodes = require('../middleware/errorHandler/errorCodes');
 
@@ -20,7 +20,6 @@ function login(req, res) {
 }
 
 function tokenValidate(req, res) {
-  console.log(req.headers);
   const token =
     req.headers.authorization && req.headers.authorization.split(' ')[1];
   if (!token) throw errorCodes.noAccessToken;
@@ -28,7 +27,15 @@ function tokenValidate(req, res) {
   if (!user) throw errorCodes.invalidAccessToken;
   res.status(200).json({ valid: true });
 }
-function token(req, res) {}
+
+function token(req, res) {
+  const { token } = req.body;
+  if (!token) throw errorCodes.noRefreshToken;
+  const user = validateToken(token);
+  if (!user) throw errorCodes.invalidRefreshToken;
+  res.status(200).json({ accessToken: generateAccessToken(user) });
+}
+
 function logout(req, res) {}
 
 module.exports = { register, login, tokenValidate, token, logout };
